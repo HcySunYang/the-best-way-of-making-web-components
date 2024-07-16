@@ -1,0 +1,11 @@
+{
+  "name": "web-components",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "serve ./src"
+  },
+  "devDependencies": {
+    "serve": "^14.2.3"
+  }
+}
