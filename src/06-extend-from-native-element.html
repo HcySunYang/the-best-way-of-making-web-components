@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Element with shadow dom</title>
+  </head>
+  <body>
+    <input is="edge-consumer" />
+
+    <script>
+      class EdgeConsumer extends HTMLInputElement {
+        constructor() {
+          super();
+          this.addEventListener('input', () => {
+            this.style.transform = `rotate(${this.value.length * 2}deg)`;
+          });
+        }
+      }
+      customElements.define('edge-consumer', EdgeConsumer, { extends: 'input' });
+
+      /**
+       * 1. Must extend from the correct native element class
+       * 2. Must define the custom element with the extends option set to the corrsponding native element name
+       * 3. Must use the is attribute to tell the browser to use the custom element
+       */
+    </script>
+  </body>
+</html>

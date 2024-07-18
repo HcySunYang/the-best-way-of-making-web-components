@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Element with shadow dom</title>
+    <style>
+      edge-consumer {
+        display: block;
+        width: 100px;
+        height: 100px;
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <edge-consumer>
+      <template shadowrootmode="open">
+        <h3>Consumer</h3>
+      </template>
+    </edge-consumer>
+
+    <script>
+      class EdgeConsumer extends HTMLElement {
+        constructor() {
+          super();
+          // This also works
+          // const shadowRoot = this.attachShadow({ mode: 'open' });
+          // shadowRoot.innerHTML = `<h3>Consumer</h3>`;
+        }
+      }
+      customElements.define('edge-consumer', EdgeConsumer);
+
+      // We can also do this, nothing special right?
+      // const edgeConsumer = document.querySelector('edge-consumer');
+      // edgeConsumer.attachShadow({ mode: 'open' });
+      // edgeConsumer.shadowRoot.innerHTML = `<h3>Consumer</h3>`;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The slot element</title>
+  </head>
+  <body>
+    <edge-consumer>
+      <!-- shadow part -->
+      <template shadowrootmode="open">
+        <span>Your Name: </span>
+        <!-- default slot -->
+        <slot></slot>
+        <!-- named slot -->
+        <slot name="footer"></slot>
+      </template>
+
+
+
+      <!-- light part -->
+      Hcy
+      <span slot="footer"></span>
+      <p></p>
+    </edge-consumer>
+
+    <script>
+      class EdgeConsumer extends HTMLElement {
+        connectedCallback() {
+          const slot = this.shadowRoot.querySelector('slot[name]')
+          slot.addEventListener('slotchange', e => {
+            console.log('slotchange', e.target.assignedNodes())
+          })
+        }
+      }
+      customElements.define('edge-consumer', EdgeConsumer);
+
+      // 1. You must use slot when you combine the light DOM and Shadow DOM
+      // 2. You can have multiple nodes that have slot=xxx attribute
+      // 3. Listen to the `slotchange` event to get the assigned nodes
+      // 4. You can manually assign nodes to a slot using assign() method, but you cannot mix it with declarative slot,
+      //    and the shadow root must be created with `slotAssignment: manual` option
+    </script>
+  </body>
+</html>

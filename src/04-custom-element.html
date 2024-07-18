@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Element</title>
+    <style>
+      edge-consumer {
+        display: block;
+        width: 100px;
+        height: 100px;
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <edge-consumer></edge-consumer>
+
+    <script>
+      // It is just an instance of the HTMLElement
+      // const edgeConsumer = document.querySelector('edge-consumer');
+      // edgeConsumer.attachInternals();
+
+      class EdgeConsumer extends HTMLElement {}
+      customElements.define('edge-consumer', EdgeConsumer);
+
+      // It is a custom element now
+      // const edgeConsumer = document.querySelector('edge-consumer');
+      // edgeConsumer.attachInternals();
+    </script>
+  </body>
+</html>

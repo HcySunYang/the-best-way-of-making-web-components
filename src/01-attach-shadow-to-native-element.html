@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Attach Shadow to a native element</title>
+    <style>
+      h1 {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box"></div>
+
+    <script>
+      const box = document.getElementById('box');
+      box.attachShadow({ mode: 'open' });
+
+      box.shadowRoot.innerHTML = '<h1>I\'am a shadow dom</h1>';
+    </script>
+  </body>
+</html>

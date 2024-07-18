@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Element - Lifecycle callbacks</title>
+  </head>
+  <body>
+    <edge-consumer></edge-consumer>
+
+    <script>
+      class EdgeConsumer extends HTMLElement {
+        static get observedAttributes() {
+          return ['webui-rock-star'];
+        }
+
+        constructor() {
+          super();
+          // Could be null if the element is created programmatically
+          console.log(this.parentNode);
+        }
+
+        connectedCallback() {
+          console.log('connectedCallback');
+          console.log(this.parentNode);
+        }
+
+        disconnectedCallback() {
+          console.log('disconnectedCallback');
+        }
+
+        adoptedCallback() {
+          // Work with document.adoptNode()
+          console.log('adoptedCallback');
+        }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+          console.log('attributeChangedCallback: ', name, oldValue, newValue);
+        }
+
+        get webuiRockStar() {
+          return this.getAttribute('webui-rock-star');
+        }
+
+        set webuiRockStar(value) {
+          this.setAttribute('webui-rock-star', value);
+        }
+      }
+      customElements.define('edge-consumer', EdgeConsumer);
+
+      // // The constructor is called but the connectedCallback is not
+      // const edgeConsumer = document.createElement('edge-consumer');
+      // // The connectedCallback is called
+      // document.body.appendChild(edgeConsumer);
+    </script>
+  </body>
+</html>

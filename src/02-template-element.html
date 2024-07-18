@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The template element</title>
+  </head>
+  <body>
+
+    <template id="tpl">
+      <h1>I'am a shadow dom</h1>
+    </template>
+
+    <div id="box"></div>
+
+    <script>
+      const box = document.getElementById('box');
+      box.attachShadow({ mode: 'open' });
+
+      const template = document.getElementById('tpl');
+      box.shadowRoot.append(template.content.cloneNode(true));
+    </script>
+  </body>
+</html>

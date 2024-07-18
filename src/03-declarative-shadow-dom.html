@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Declarative shadow dom</title>
+  </head>
+  <body>
+    <div id="box">
+      <template shadowrootmode="open">
+        <h1>I'am a shadow dom</h1>
+      </template>
+    </div>
+
+    <script>
+      const box = document.getElementById('box');
+      if (box.shadowRoot) {
+        // SSR
+        // Do hydration & make interactive
+      }
+    </script>
+  </body>
+</html>

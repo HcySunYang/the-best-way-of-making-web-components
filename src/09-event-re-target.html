@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Event and event re-target</title>
+  </head>
+  <body>
+    <edge-consumer>
+      <p>I am slotted</p>
+    </edge-consumer>
+
+    <script>
+      const template = document.createElement('template');
+      template.innerHTML = `
+        <span>Label: </span>
+        <!-- default slot -->
+        <slot></slot>
+      `;
+
+      class EdgeConsumer extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({ mode: 'open' });
+          this.shadowRoot.append(template.content.cloneNode(true));
+        }
+
+        // connectedCallback() {
+        //   // 1. Get the element from shadow part and attach a event listener
+        //   const label = this.shadowRoot.querySelector('span');
+        //   label.addEventListener('click', this.handleLableClick);
+        // }
+
+        // handleLableClick = (event) => {
+        //   // 2. Dispatch a custom event from the element
+        //   this.dispatchEvent(new CustomEvent('edge-click', {
+        //     detail: {
+        //       message: 'Hello from EdgeConsumer'
+        //     }
+        //   }));
+        // }
+      }
+      customElements.define('edge-consumer', EdgeConsumer);
+
+      // // 3. Listen to the custom event from the element
+      // const edgeConsumer = document.querySelector('edge-consumer');
+      // edgeConsumer.addEventListener('edge-click', e => {
+      //   console.log('edgeConsumer lable edge-click: ', e.target, e.detail);
+      // });
+
+      document.querySelector('edge-consumer').addEventListener('click', e => {
+        console.log('edgeConsumer lable click: ', e.target);
+        // console.log('composedPath: ', e.composedPath());
+      });
+    </script>
+  </body>
+</html>
