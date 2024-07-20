@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Styling - :host-context()</title>
+  </head>
+  <body>
+    <edge-consumer></edge-consumer>
+
+    <div class="dark-theme">
+      <edge-consumer></edge-consumer>
+    </div>
+
+    <script>
+      const template = document.createElement('template');
+      template.innerHTML = `
+        <span>Consumer</span>
+      `;
+
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(`
+        :host-context(.dark-theme) {
+          background: gray;
+        }
+      `);
+
+      class EdgeConsumer extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({ mode: 'open' });
+          this.shadowRoot.append(template.content.cloneNode(true));
+          this.shadowRoot.adoptedStyleSheets.push(sheet);
+        }
+      }
+      customElements.define('edge-consumer', EdgeConsumer);
+    </script>
+  </body>
+</html>

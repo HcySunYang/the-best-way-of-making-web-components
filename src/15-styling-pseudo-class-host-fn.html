@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Styling - :host()</title>
+  </head>
+  <body>
+    <edge-consumer></edge-consumer>
+
+    <script>
+      const template = document.createElement('template');
+      template.innerHTML = `
+        <span>Consumer</span>
+      `;
+
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(`
+        :host {
+          display: block;
+          border: 1px solid #333;
+          padding: 10px;
+          margin: 10px;
+        }
+        :host([disabled]) {
+          background: gray;
+        }
+      `);
+
+      class EdgeConsumer extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({ mode: 'open' });
+          this.shadowRoot.append(template.content.cloneNode(true));
+          this.shadowRoot.adoptedStyleSheets.push(sheet);
+        }
+
+        connectedCallback() {
+          this.addEventListener('click', () => {
+            this.toggleAttribute('disabled');
+          });
+        }
+      }
+      customElements.define('edge-consumer', EdgeConsumer);
+    </script>
+  </body>
+</html>

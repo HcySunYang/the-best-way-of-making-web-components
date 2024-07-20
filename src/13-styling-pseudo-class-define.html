@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Styling - pseudo-class :define</title>
+    <style>
+      /* This is not a good practice, especially in SSR scenario, may affect the FCP metric */
+      :not(:defined) {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <edge-consumer>Consumer</edge-consumer>
+
+    <script type="module">
+      class EdgeConsumer extends HTMLElement {}
+      // customElements.define('edge-consumer', EdgeConsumer);
+    </script>
+  </body>
+</html>

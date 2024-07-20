@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Styling - constructable StyleSheet and import attributes</title>
+  </head>
+  <body>
+    <edge-consumer></edge-consumer>
+    <edge-consumer></edge-consumer>
+
+    <script type="module">
+      // 1. Import the CSSStyleSheet object from the style.css file directly
+      import sheet from './style.css' with { type: 'css' };
+
+      const template = document.createElement('template');
+      template.innerHTML = `
+        <span>Consumer</span>
+      `;
+
+      class EdgeConsumer extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({ mode: 'open' });
+          this.shadowRoot.append(template.content.cloneNode(true));
+          // 2. Append the CSSStyleSheet object to the shadowRoot's adoptedStyleSheets property
+          this.shadowRoot.adoptedStyleSheets.push(sheet);
+        }
+      }
+      customElements.define('edge-consumer', EdgeConsumer);
+    </script>
+  </body>
+</html>

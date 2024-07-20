@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Styling - custom states</title>
+    <style>
+      edge-consumer {
+        display: inline-block;
+        padding: 10px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+      }
+      /* take higher precedence */
+      /* edge-consumer:state(disabled) {
+        background-color: #ccc;
+      } */
+    </style>
+  </head>
+  <body>
+    <edge-consumer></edge-consumer>
+
+    <script>
+      const template = document.createElement('template');
+      template.innerHTML = `
+        <span>Consumer</span>
+      `;
+
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(`
+        :host(:state(disabled)) {
+          background-color: red;
+        }
+      `);
+
+      class EdgeConsumer extends HTMLElement {
+        #internals = null;
+
+        constructor() {
+          super();
+          this.attachShadow({ mode: 'open' });
+          this.shadowRoot.append(template.content.cloneNode(true));
+          this.shadowRoot.adoptedStyleSheets.push(sheet);
+
+          // 1. Attach internals
+          this.#internals = this.attachInternals();
+        }
+
+        connectedCallback() {
+          this.addEventListener('click', () => {
+            // 2. Operating on states
+            const states = this.#internals.states;
+            states.has('disabled') ? states.delete('disabled') : states.add('disabled');
+          })
+        }
+      }
+      customElements.define('edge-consumer', EdgeConsumer);
+    </script>
+  </body>
+</html>

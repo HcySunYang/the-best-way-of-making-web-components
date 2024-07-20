@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Styling - style tag</title>
+  </head>
+  <body>
+    <edge-consumer></edge-consumer>
+    <edge-consumer></edge-consumer>
+
+    <script>
+      const template = document.createElement('template');
+      // Bad, it will generate multiple CSSStyleSheet objects with the same content
+      template.innerHTML = `
+        <style>
+          span {
+            color: red;
+          }
+        </style>
+        <span>Consumer</span>
+      `;
+
+      // Flash of unstyled content (FOUC)
+      // template.innerHTML = `
+      //   <style>
+      //     @import url('./style.css');
+      //   </style>
+      //   <span>Consumer</span>
+      // `;
+
+      // Flash of unstyled content (FOUC)
+      // template.innerHTML = `
+      //   <link rel="stylesheet" href="./style.css">
+      //   <span>Consumer</span>
+      // `;
+
+      class EdgeConsumer extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({ mode: 'open' });
+          this.shadowRoot.append(template.content.cloneNode(true));
+        }
+      }
+      customElements.define('edge-consumer', EdgeConsumer);
+    </script>
+  </body>
+</html>
