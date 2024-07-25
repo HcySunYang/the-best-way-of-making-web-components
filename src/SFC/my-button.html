@@ -1,0 +1,17 @@
+<style>
+  :host {
+    display: block;
+  }
+</style>
+
+<template shadowrootmode="open">
+  <div role="button">
+    <slot>click me</slot>
+  </div>
+</template>
+
+<script>
+  class MyButton extends HTMLElement {
+  }
+  customElements.define('my-button', MyComponent);
+</script>
