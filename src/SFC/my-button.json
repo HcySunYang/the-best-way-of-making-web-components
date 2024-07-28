@@ -1,0 +1,12 @@
+{
+  "style": ":host {\ndisplay: block;\n}",
+  "shadowRoot": {
+    "mode": "open",
+    "template": [
+      {
+        "type": "STATIC",
+        "content": "<div role='button'>\n<slot>click me</slot>\n</div>"
+      }
+    ]
+  }
+}

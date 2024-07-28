@@ -1,0 +1,19 @@
+<style>
+  :host {
+    display: block;
+  }
+</style>
+
+<template shadowrootmode="open">
+  <div>
+    <h1>I am the shadow DOM of this component</h1>
+    <my-button></my-button>
+    some text
+  </div>
+</template>
+
+<script>
+  class MyComponent extends HTMLElement {
+  }
+  customElements.define('my-component', MyComponent);
+</script>

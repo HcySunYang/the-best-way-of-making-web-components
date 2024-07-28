@@ -1,0 +1,20 @@
+{
+  "style": ":host {\ndisplay: block;\n}",
+  "shadowRoot": {
+    "mode": "open",
+    "template": [
+      {
+        "type": "STATIC",
+        "content": "<div>\n<h1>I am the shadow DOM of this component</h1>"
+      },
+      {
+        "type": "COMPONENT",
+        "JSONPath": "./my-button.json"
+      },
+      {
+        "type": "STATIC",
+        "content": "some text\n</div>"
+      }
+    ]
+  }
+}

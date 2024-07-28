@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Styling - ::slotted()</title>
+</head>
+
+<body>
+  <edge-consumer>
+    <span>I am slotted</span>
+    <p class="dog">I am slotted too</p>
+    <p class="cat">I am slotted too</p>
+  </edge-consumer>
+
+  <script>
+    const template = document.createElement('template');
+    template.innerHTML = `
+      <h1>
+        <slot></slot>
+      </h1>
+    `;
+
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(`
+      ::slotted(span) {
+        color: red;
+      }
+      ::slotted(p.dog) {
+        color: green;
+      }
+    `);
+
+    class EdgeConsumer extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.append(template.content.cloneNode(true));
+        this.shadowRoot.adoptedStyleSheets.push(sheet);
+      }
+    }
+    customElements.define('edge-consumer', EdgeConsumer);
+  </script>
+</body>
+
+</html>
