@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create a my-counter component</title>
+    <style>
+      my-counter:state(maximum) button[slot=end] {
+        background-color: gray;
+      }
+      my-counter:state(minimum) button[slot=start] {
+        background-color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <my-counter initial="5" min="1" max="10">
+      <button slot="start">-</button>
+      <button slot="end">+</button>
+    </my-counter>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+      const myCounter = document.querySelector('my-counter');
+      myCounter.addEventListener('change', (event) => {
+        console.log(event.target.currentValue);
+      });
+
+      const template = document.createElement('template');
+      template.innerHTML = `
+        <slot name="start"></slot>
+        <span class="counter"></span>
+        <slot name="end"></slot>
+      `;
+
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(`
+        :host {
+          display: flex-inline;
+        }
+      `);
+
+      class MyCounter extends HTMLElement {
+        get initial() {
+          return Number(this.getAttribute('initial'));
+        }
+
+        get min() {
+          return Number(this.getAttribute('min'));
+        }
+
+        set min(value) {
+          this.setAttribute('min', value);
+        }
+
+        get max() {
+          return Number(this.getAttribute('max'));
+        }
+
+        set max(value) {
+          this.setAttribute('max', value);
+        }
+
+        #counter = 0;
+
+        get currentValue () {
+          return this.#counter;
+        }
+
+        #domCounter = null;
+        #domStart = null;
+        #domEnd = null;
+
+        #internals = null;
+
+        constructor() {
+          super();
+          this.#internals = this.attachInternals();
+          this.attachShadow({ mode: 'open' });
+          this.shadowRoot.adoptedStyleSheets = [sheet];
+          this.shadowRoot.appendChild(template.content.cloneNode(true));
+        }
+
+        connectedCallback() {
+          this.#counter = this.initial;
+          this.#domCounter = this.shadowRoot.querySelector('.counter');
+          this.#domStart = this.shadowRoot.querySelector('slot[name="start"]').assignedElements()[0];
+          this.#domEnd = this.shadowRoot.querySelector('slot[name="end"]').assignedElements()[0];
+
+          this.#domStart.addEventListener('click', this.#decrement);
+          this.#domEnd.addEventListener('click', this.#increment);
+
+          this.#render();
+        }
+
+        disconnectedCallback() {
+          this.#domStart.removeEventListener('click', this.#decrement);
+          this.#domEnd.removeEventListener('click', this.#increment);
+        }
+
+        #increment = () => {
+          if (this.#counter < this.max) {
+            this.#counter++;
+            this.#render();
+          }
+        }
+
+        #decrement = () => {
+          if (this.#counter > this.min) {
+            this.#counter--;
+            this.#render();
+          }
+        }
+
+        #emit() {
+          this.dispatchEvent(new CustomEvent('change', {
+            detail: this
+          }));
+        }
+
+        #render() {
+          this.shadowRoot.querySelector('.counter').textContent = this.#counter;
+          const cssStates = this.#internals.states;
+          if (this.#counter === this.max) {
+            cssStates.add('maximum');
+          } else {
+            cssStates.delete('maximum');
+          }
+          if (this.#counter === this.min) {
+            cssStates.add('minimum');
+          } else {
+            cssStates.delete('minimum');
+          }
+          this.#emit();
+        }
+      }
+      customElements.define('my-counter', MyCounter);
+    </script>
+  </body>
+</html>
